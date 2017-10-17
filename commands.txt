@@ -1,0 +1,5 @@
+mkdir -p data
+
+docker run -d -v $(pwd)/prometheus-config:/config -v $(pwd)/data:/prometheus --name prometheus-server -p 9090:9090  prom/prometheus:latest -config.file=/config/prometheus.yml
+
+docker run -d -p 9115:9115 --rm --name blackboxprober --privileged -v $(pwd)/blackbox-config/blackbox.yml:/config/blackbox.yml prom/blackbox-exporter:latest --config.file=/config/blackbox.yml
