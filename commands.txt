@@ -4,4 +4,4 @@ docker network create --driver bridge prometheus
 
 docker run -d --network=prometheus -v $(pwd)/prometheus-config:/config -v $(pwd)/data:/prometheus --name prometheus-server -p 9090:9090  prom/prometheus:latest -config.file=/config/prometheus.yml
 
-docker run -d --network=prometheus -p 9115:9115 --rm --name blackboxprober --privileged -v $(pwd)/blackbox-config/blackbox.yml:/config/blackbox.yml prom/blackbox-exporter:latest --config.file=/config/blackbox.yml
+docker run -d --network=prometheus -p 9115:9115 --rm --name blackboxprober --privileged -v $(pwd)/blackbox-config/config.yml:/etc/blackbox_exporter/config.yml prom/blackbox-exporter:latest
