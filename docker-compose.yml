@@ -19,6 +19,13 @@ services:
       - ./blackbox-config/config.yml:/etc/blackbox_exporter/config.yml 
     networks: 
       - prometheus-network
+  nodeexporter:
+    image: prom/node-exporter:latest
+    container_name: nodeexporter
+    ports:
+      - "9100:9100"
+    networks: 
+      - prometheus-network
 networks:
   prometheus-network:
     driver: bridge 
