@@ -26,6 +26,20 @@ services:
       - "9100:9100"
     networks: 
       - prometheus-network
+  grafanastorage:
+    image: busybox:latest
+    container_name: grafana-storage
+    volumes:
+      - /var/lib/grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-server
+    ports: 
+      - "3000:3000"
+    volumes:
+      - /var/lib/grafana
+    networks: 
+      - prometheus-network
 networks:
   prometheus-network:
     driver: bridge 
