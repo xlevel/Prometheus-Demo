@@ -1,45 +1,34 @@
-version: "3.3"
+version: '3'
 services:
+  webservice:
+    image: "test/webservice:latest"
+    ports:
+      - "3000:3000"
+    container_name: webservice
+    depends_on:
+      - redis
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    volumes:
+      - ./nginx-config:/etc/nginx/conf.d
+      - ./web-root:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - webservice
+  redis:
+    image: "redis:alpine"
+    container_name: redis
   prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus-server
+    image: "prom/prometheus:latest"
+    container_name: prometheus
     ports:
       - "9090:9090"
-    volumes: 
+    volumes:
       - ./prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data:/prometheus
-    networks: 
-      - prometheus-network
-  blackbox:
-    image: prom/blackbox-exporter:latest
-    container_name: blackboxprober
-    ports:
-      - "9115:9115"
-    volumes: 
-      - ./blackbox-config/config.yml:/etc/blackbox_exporter/config.yml 
-    networks: 
-      - prometheus-network
-  nodeexporter:
-    image: prom/node-exporter:latest
-    container_name: nodeexporter
-    ports:
-      - "9100:9100"
-    networks: 
-      - prometheus-network
-  grafanastorage:
-    image: busybox:latest
-    container_name: grafana-storage
-    volumes:
-      - /var/lib/grafana
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana-server
-    ports: 
-      - "3000:3000"
-    volumes:
-      - /var/lib/grafana
-    networks: 
-      - prometheus-network
-networks:
-  prometheus-network:
-    driver: bridge 
+  #nginx-exporter:
+  #  image: "nginx/nginx-prometheus-exporter:latest"
+  #  environment:
+  #    - nginx.scrape-uri=http://webserver:8080/stub_status
