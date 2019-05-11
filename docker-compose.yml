@@ -28,7 +28,12 @@ services:
     volumes:
       - ./prometheus-config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data:/prometheus
-  #nginx-exporter:
-  #  image: "nginx/nginx-prometheus-exporter:latest"
-  #  environment:
-  #    - nginx.scrape-uri=http://webserver:8080/stub_status
+  nginx-exporter:
+    image: "nginx/nginx-prometheus-exporter:0.3.0"
+    container_name: nginx-exporter
+    ports:
+      - "9113:9113"
+    environment:
+      - SCRAPE_URI=http://webserver/stub_status
+    depends_on:
+      - webserver
