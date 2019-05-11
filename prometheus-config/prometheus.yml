@@ -3,32 +3,9 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'blackbox'
-    scrape_interval: 1m
-    scrape_timeout: 10s
-    metrics_path: /probe
-    params:
-      module: [http_2xx]
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: blackboxprober:9115
+  - job_name: 'prometheus'
     static_configs:
-      - targets:
-        - google.com
-  - job_name: 'node resources'
-    scrape_interval: 15s
+      - targets: ['localhost:9090']
+  - job_name: 'nginx'
     static_configs:
-      - targets:
-        - 'nodeexporter:9100'
-    params:
-      collect[]:
-        - cpu
-        - meminfo
-        - diskstats
-        - netdev
-        - netstat
-          
+      - targets: ['nginx-exporter:9113']

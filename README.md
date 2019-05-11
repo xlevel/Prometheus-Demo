@@ -7,12 +7,11 @@ A quick start example of using Prometheus for web service monitoring using Docke
 1. Install **Docker** onto the target machine.
 1. Clone the GitHub repo.
 1. Navigate into the directory.
-1. Add the domains to be monitored to the Prometheus configuration file: `prometheus-config/prometheus.yml`.
-1. Run `docker-compose up`.
-
-## Versioning
-
-0.0.1 - Initial working version of the Prometheus Docker environment.
+1. Run `docker build -t test/webservice:latest .` to build the test web service.
+1. Run `docker-compose up` to bring up the application.
+1. Navigate to `http://localhost/` in a web browser and you should see the 'Hello' returned.
+1. Using a tool such as Postman, do a `PUT` to `http://localhost/orders/` with a body of `{"orderId": "1234567","orderValue": "123.45"}`.
+1. Do a `GET` to `http://localhost/1234567` and the original data should be displayed. 
 
 ## License
 
